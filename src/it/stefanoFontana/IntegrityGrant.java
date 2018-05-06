@@ -31,8 +31,9 @@ public class IntegrityGrant implements Serializable {
     private Methods utils = new Methods() {};
     private final HashMap<String, String> hash = new HashMap<>();
 
-
-
+    /**
+     * @return Class hashCode of its components
+     */
     @Override
     public int hashCode() {
         int result = 0;
@@ -40,6 +41,12 @@ public class IntegrityGrant implements Serializable {
         return result;
     }
 
+    /**
+     * This fuction is executed every time before the start of an new hash calculation.
+     * The method is designed to set the default Methods class {@see Methods} defining
+     * how to get hash and object.
+     * @return A new class implementing Methods.
+     */
     protected Methods setMethods() {
         return new Methods() {
         };
@@ -57,7 +64,7 @@ public class IntegrityGrant implements Serializable {
             for (Annotation a : ans) {
                 if (a.toString().equals(inter)) {
                     i.setAccessible(true);
-                    toHash.append(utils.getObject(new SuperField(i, this)));
+                    toHash.append(utils.getObject(i, this));
                     break;
                 }
             }
@@ -70,27 +77,58 @@ public class IntegrityGrant implements Serializable {
         return utils.getHash(getHashingData(iface));
     }
 
+    /**
+     * Updates class hash for Fields with the standard annotation {@see IntegrityCheck}
+     * in it.stefanoFontana.annotations
+     * @throws HashingException In case of exception during the hashing function execution
+     */
     protected final void updateHash() throws HashingException {
         hash.put("@it.stefanoFontana.annotations.IntegrityCheck()", getFieldsHash("@it.stefanoFontana.annotations.IntegrityCheck()"));
     }
 
+    /**
+     * Updates class hash for Fields with the annotation passed as parameter.
+     * Generally the format used is {@code @<package>.annotationInterface}
+     * @param interfaceName The interface representation of the interface wanted.
+     * @throws HashingException In case of exception during the hashing function execution
+     */
     protected void updateHash(String interfaceName) throws HashingException {
         hash.put(interfaceName, getFieldsHash(interfaceName));
     }
 
+    /**
+     * Checkes the hash for Fields with the standard annotation {@see IntegrityCheck}
+     * in it.stefanoFontana.annotations
+     * @throws HashingException In case the hash saved is different to the one generated.
+     */
     protected final void checkHash() throws HashingException {
         if (!hash.get("@it.stefanoFontana.annotations.IntegrityCheck()").equals(getFieldsHash("@it.stefanoFontana.annotations.IntegrityCheck()")))
             throw new HashingException("Wrong hashes");
     }
 
+    /**
+     * Checkes the hash for Fields with the annotation passed as parameter.
+     * Generally the format used is {@code @<package>.annotationInterface}
+     * @param iface The interface representation of the interface wanted.
+     * @throws HashingException In case the hash saved is different to the one generated.
+     */
     protected void checkHash(String iface) throws HashingException {
         if (!hash.get(iface).equals(getFieldsHash(iface))) throw new HashingException("Wrong hashes");
     }
 
+    /**
+     * @return The hash saved for the standard annotation {@see IntegrityCheck}
+     * in it.stefanoFontana.annotations
+     */
     public final String showHash(){
         return hash.get("@it.stefanoFontana.annotations.IntegrityCheck()");
     }
 
+    /**
+     *
+     * @param iface The interface representation of the interface wanted.
+     * @return The hash saved for the interface passed
+     */
     public String showHash(String iface){
         return hash.get(iface);
     }

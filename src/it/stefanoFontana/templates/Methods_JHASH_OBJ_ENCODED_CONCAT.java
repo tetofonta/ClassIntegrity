@@ -20,27 +20,29 @@
 package it.stefanoFontana.templates;
 
 import it.stefanoFontana.Methods;
-import it.stefanoFontana.SuperField;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 
+/**
+ * This is a model for the hashing process.
+ * Given a set of fields to be hashed, the final hash will be
+ * the standard hashCode hash of the concatened base64 representation serialized object of each single field
+ * Returns null in case of unserializable object
+ */
 public final class Methods_JHASH_OBJ_ENCODED_CONCAT implements Methods {
     @SuppressWarnings("Duplicates")
     @Override
-    public String getObject(SuperField o) {
+    public String getObject(Field f, Object o) {
         try {
-            StringBuilder ret = new StringBuilder("{");
-
-//            if (!(o.getF().get(o.getRef()) instanceof Serializable)) return null;
-
-            if (o.getF().getType().isArray()) {
-                Object array = o.getF().get(o.getRef());
+            if (f.getType().isArray()) {
+                Object array = f.get(o);
                 int len = Array.getLength(array);
-                for (int q = 0; q < len; q++) ret.append((Array.get(array, q)).toString()).append(", ");
-                return ret.append("}").toString();
-            } else return Utils.getObj(o.getF().get(o.getRef()));
+                Object[] ar = new Object[len];
+                for (int q = 0; q < len; q++) ar[q] = Array.get(array, q);
+                return Utils.getObj(ar);
+            } else return Utils.getObj(f.get(o));
         } catch (IllegalAccessException | IOException e) {
             return null;
         }

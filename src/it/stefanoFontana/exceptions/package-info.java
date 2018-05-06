@@ -17,18 +17,8 @@
  * along with ClassIntegrity.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.stefanoFontana.annotations;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * IntegrityCheck denotes a class field to be included
- * in the final hashing used to check for Integrity of the data.
+ * Contains Exceptions defined as {@code Throwable} in order to define
+ * the basic behavour of this library.
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface IntegrityCheck {
-}
+package it.stefanoFontana.exceptions;

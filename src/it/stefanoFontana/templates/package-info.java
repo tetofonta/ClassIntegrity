@@ -17,25 +17,7 @@
  * along with ClassIntegrity.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.stefanoFontana;
-
-import java.lang.reflect.Field;
-
-public final class SuperField {
-
-    private final Field f;
-    private Object ref;
-
-    public SuperField(Field f, Object ref) {
-        this.f = f;
-        this.ref = ref;
-    }
-
-    public Field getF() {
-        return f;
-    }
-
-    public Object getRef() {
-        return ref;
-    }
-}
+/**
+ * This package contains models for the hashing process
+ */
+package it.stefanoFontana.templates;

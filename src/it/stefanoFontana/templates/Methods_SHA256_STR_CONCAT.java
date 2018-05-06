@@ -22,6 +22,11 @@ package it.stefanoFontana.templates;
 import it.stefanoFontana.Methods;
 import it.stefanoFontana.exceptions.HashingException;
 
+/**
+ * This is a model for the hashing process.
+ * Given a set of fields to be hashed, the final hash will be
+ * the SHA256 hash of the concatened {@code String} representation of each single field
+ */
 public final class Methods_SHA256_STR_CONCAT implements Methods {
 
     @Override

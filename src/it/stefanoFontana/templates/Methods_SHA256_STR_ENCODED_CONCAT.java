@@ -20,13 +20,18 @@
 package it.stefanoFontana.templates;
 
 import it.stefanoFontana.Methods;
-import it.stefanoFontana.SuperField;
 import it.stefanoFontana.exceptions.HashingException;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.Base64;
 
+/**
+ * This is a model for the hashing process.
+ * Given a set of fields to be hashed, the final hash will be
+ * the SHA256 hash of the concatened base64 representation of each single field
+ */
 public final class Methods_SHA256_STR_ENCODED_CONCAT implements Methods {
     @Override
     public String getHash(String data) throws HashingException {
@@ -34,18 +39,19 @@ public final class Methods_SHA256_STR_ENCODED_CONCAT implements Methods {
     }
 
     @Override
-    public String getObject(SuperField o) {
+    public String getObject(Field f, Object o) {
         try {
             StringBuilder ret = new StringBuilder("{");
 
-            if (o.getF().getType().isArray()) {
-                Object array = o.getF().get(o.getRef());
+            if (f.getType().isArray()) {
+                Object array = f.get(o);
                 int len = Array.getLength(array);
                 for (int q = 0; q < len; q++) ret.append((Array.get(array, q)).toString()).append(", ");
-                return ret.append("}").toString();
-            } else return Base64.getEncoder().encodeToString(o.getF().get(o.getRef()).toString().getBytes("UTF-8"));
+                return Base64.getEncoder().encodeToString(ret.append("}").toString().getBytes("UTF-8"));
+            } else return Base64.getEncoder().encodeToString(f.get(o).toString().getBytes("UTF-8"));
         } catch (IllegalAccessException | UnsupportedEncodingException e) {
             return null;
         }
     }
+
 }
