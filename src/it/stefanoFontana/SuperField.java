@@ -17,8 +17,25 @@
  * along with ClassIntegrity.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class IntegrityGrant {
+package it.stefanoFontana;
 
+import java.lang.reflect.Field;
 
+public final class SuperField {
 
+    private Field f;
+    private Object ref;
+
+    public Field getF() {
+        return f;
+    }
+
+    public Object getRef() {
+        return ref;
+    }
+
+    public SuperField(Field f, Object ref) {
+        this.f = f;
+        this.ref = ref;
+    }
 }
