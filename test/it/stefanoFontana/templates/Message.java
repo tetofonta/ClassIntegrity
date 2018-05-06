@@ -17,25 +17,30 @@
  * along with ClassIntegrity.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.stefanoFontana;
+package it.stefanoFontana.templates;
 
-import java.lang.reflect.Field;
+import it.stefanoFontana.IntegrityGrant;
+import it.stefanoFontana.annotations.IntegrityCheck;
+import it.stefanoFontana.exceptions.HashingException;
 
-public final class SuperField {
+import java.io.Serializable;
 
-    private final Field f;
-    private Object ref;
+public class Message extends IntegrityGrant implements Serializable {
+    @IntegrityCheck
+    public String a = "Stefano";
 
-    public SuperField(Field f, Object ref) {
-        this.f = f;
-        this.ref = ref;
+    public void setH() throws HashingException {
+        updateHash();
     }
 
-    public Field getF() {
-        return f;
+    public void check() throws HashingException {
+        checkHash();
     }
 
-    public Object getRef() {
-        return ref;
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (a != null ? a.hashCode() : 0);
+        return result;
     }
 }

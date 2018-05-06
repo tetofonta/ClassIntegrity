@@ -17,25 +17,16 @@
  * along with ClassIntegrity.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.stefanoFontana;
+package it.stefanoFontana.templates;
 
-import java.lang.reflect.Field;
+import it.stefanoFontana.Methods;
+import it.stefanoFontana.exceptions.HashingException;
 
-public final class SuperField {
+public final class Methods_SHA256_STR_CONCAT implements Methods {
 
-    private final Field f;
-    private Object ref;
-
-    public SuperField(Field f, Object ref) {
-        this.f = f;
-        this.ref = ref;
+    @Override
+    public String getHash(String data) throws HashingException {
+        return Utils.bytesToHex(Utils.hash(data));
     }
 
-    public Field getF() {
-        return f;
-    }
-
-    public Object getRef() {
-        return ref;
-    }
 }

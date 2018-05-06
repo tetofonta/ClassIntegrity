@@ -17,20 +17,24 @@
  * along with ClassIntegrity.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.stefanoFontana;
+package it.stefanoFontana.templates;
 
+import it.stefanoFontana.Methods;
+import it.stefanoFontana.SuperField;
 import it.stefanoFontana.exceptions.HashingException;
 
-import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.util.Base64;
 
-public interface Methods extends Serializable {
-
-    default String getHash(String data) throws HashingException {
-        return String.valueOf(data.hashCode());
+public final class Methods_SHA256_STR_ENCODED_CONCAT implements Methods {
+    @Override
+    public String getHash(String data) throws HashingException {
+        return Utils.bytesToHex(Utils.hash(data));
     }
 
-    default String getObject(SuperField o) {
+    @Override
+    public String getObject(SuperField o) {
         try {
             StringBuilder ret = new StringBuilder("{");
 
@@ -39,11 +43,9 @@ public interface Methods extends Serializable {
                 int len = Array.getLength(array);
                 for (int q = 0; q < len; q++) ret.append((Array.get(array, q)).toString()).append(", ");
                 return ret.append("}").toString();
-            } else return o.getF().get(o.getRef()).toString();
-        } catch (IllegalAccessException e) {
+            } else return Base64.getEncoder().encodeToString(o.getF().get(o.getRef()).toString().getBytes("UTF-8"));
+        } catch (IllegalAccessException | UnsupportedEncodingException e) {
             return null;
         }
     }
-
-
 }

@@ -19,9 +19,6 @@
 
 package it.stefanoFontana.annotations;
 
-import it.stefanoFontana.Methods;
-import it.stefanoFontana.SuperField;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

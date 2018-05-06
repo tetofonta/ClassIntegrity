@@ -17,33 +17,32 @@
  * along with ClassIntegrity.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.stefanoFontana;
+package it.stefanoFontana.templates;
 
-import it.stefanoFontana.exceptions.HashingException;
+import it.stefanoFontana.Methods;
+import it.stefanoFontana.SuperField;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 
-public interface Methods extends Serializable {
-
-    default String getHash(String data) throws HashingException {
-        return String.valueOf(data.hashCode());
-    }
-
-    default String getObject(SuperField o) {
+public final class Methods_JHASH_OBJ_ENCODED_CONCAT implements Methods {
+    @SuppressWarnings("Duplicates")
+    @Override
+    public String getObject(SuperField o) {
         try {
             StringBuilder ret = new StringBuilder("{");
+
+//            if (!(o.getF().get(o.getRef()) instanceof Serializable)) return null;
 
             if (o.getF().getType().isArray()) {
                 Object array = o.getF().get(o.getRef());
                 int len = Array.getLength(array);
                 for (int q = 0; q < len; q++) ret.append((Array.get(array, q)).toString()).append(", ");
                 return ret.append("}").toString();
-            } else return o.getF().get(o.getRef()).toString();
-        } catch (IllegalAccessException e) {
+            } else return Utils.getObj(o.getF().get(o.getRef()));
+        } catch (IllegalAccessException | IOException e) {
             return null;
         }
     }
-
-
 }

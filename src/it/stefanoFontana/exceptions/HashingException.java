@@ -17,7 +17,9 @@
  * along with ClassIntegrity.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.stefanoFontana.exceptions;import java.security.PrivilegedActionException;
+package it.stefanoFontana.exceptions;
+
+import java.security.PrivilegedActionException;
 
 public class HashingException extends Throwable {
 
