@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"it.stefanoFontana"},{"l":"it.stefanoFontana.annotations"},{"l":"it.stefanoFontana.exceptions"},{"l":"it.stefanoFontana.templates"}]
