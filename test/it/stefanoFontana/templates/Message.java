@@ -20,6 +20,7 @@
 package it.stefanoFontana.templates;
 
 import it.stefanoFontana.IntegrityGrant;
+import it.stefanoFontana.Methods;
 import it.stefanoFontana.annotations.IntegrityCheck;
 import it.stefanoFontana.exceptions.HashingException;
 
@@ -42,5 +43,10 @@ public class Message extends IntegrityGrant implements Serializable {
         int result = super.hashCode();
         result = 31 * result + (a != null ? a.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    protected Methods setMethods() {
+        return new Methods_SHA256_STR_HASH_CONCAT();
     }
 }

@@ -21,18 +21,15 @@ package it.stefanoFontana;
 
 import it.stefanoFontana.annotations.IntegrityCheck;
 import it.stefanoFontana.exceptions.HashingException;
-import it.stefanoFontana.templates.Methods_SHA256_OBJ_ENCODED_CONCAT;
-import it.stefanoFontana.templates.Methods_SHA256_STR_CONCAT;
-import it.stefanoFontana.templates.Methods_SHA256_STR_ENCODED_CONCAT;
-import it.stefanoFontana.templates.Methods_SHA256_STR_HASH_CONCAT;
+import it.stefanoFontana.templates.*;
 import org.junit.jupiter.api.*;
 
-import java.io.Serializable;
-import java.io.StreamCorruptedException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -121,7 +118,7 @@ class IntegrityGrantTest {
                 dynamicTest("Only Strings", () -> retCorrect("a22d826d5a9c92fdd86feda3826c8b390c258762a985583d1e099e5208f18637", new std2())),
                 dynamicTest("NoAttributes", () -> retCorrect("0", new std3())),
                 dynamicTest("inside", () -> retCorrect("7d0fc826ccf2a71d3131d54053392e09196ba46c9d54a63261af08e526a0bd26", new std4())),
-                dynamicTest("Vectors", () -> retCorrect("75bbc2a145dcaff1bd7f3e2176995f68de7f50ea7bfecf3438f328e044befa83", new std5()))
+                dynamicTest("Vectors", () -> retCorrect("6c8bde7832124aebc3ec0af996da45423457893454fb56d510fe0564902af987", new std5()))
         );
     }
 
@@ -140,6 +137,11 @@ class IntegrityGrantTest {
             int b = 6;
             @IntegrityCheck
             Object c = new Object();
+
+            @Override
+            protected Methods setMethods() {
+                return new Methods_SHA256_STR_HASH_CONCAT();
+            }
         }
         std1 obj = new std1();
         obj.updateHash();
@@ -151,6 +153,28 @@ class IntegrityGrantTest {
         HashMap<String, String> h = (HashMap<String, String>) f.get(obj);
         h.put("@it.stefanoFontana.annotations.IntegrityCheck()", "cisaooo");
         assertThrows(HashingException.class, obj::checkHash);
+    }
+
+    static <T extends Serializable> String getObj(Object obj) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(obj);
+        oos.close();
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
+    }
+
+    private static <T> T readObj(String in) throws IOException, ClassNotFoundException {
+        return (T) new ObjectInputStream(new ByteArrayInputStream(Base64.getDecoder().decode(in))).readObject();
+    }
+
+    @Test
+    public void transmission() throws HashingException, IOException, ClassNotFoundException {
+        Message s = new Message();
+        s.setH();
+        s.check();
+
+        Message n = readObj(getObj(s));
+        assertEquals(s.showHash(), n.showHash());
     }
 
 }
