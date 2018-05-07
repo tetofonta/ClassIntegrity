@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ClassIntegrity:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ClassIntegrity_jar</output-path>
+    <root id="archive" name="ClassIntegrity.jar">
+      <element id="module-output" name="ClassIntegrity" />
+    </root>
+  </artifact>
+</component>

@@ -19,6 +19,7 @@
 
 package it.stefanoFontana;
 
+import it.stefanoFontana.annotations.IntegrityCheck;
 import it.stefanoFontana.exceptions.HashingException;
 
 import java.io.Serializable;
@@ -27,6 +28,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public class IntegrityGrant implements Serializable {
+
+    @IntegrityCheck
+    private final String Version = "0.1.2";
 
     private Methods utils = new Methods() {};
     private final HashMap<String, String> hash = new HashMap<>();
